@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.PresentMapper">
+    <resultMap id="presentRequesMap" type="Present">
+        <id property="id" column="id"/>
+        <result property="price" column="price"/>
+        <result property="realPrice" column="real_price"/>
+        <result property="shouxufei" column="shouxufei"/>
+        <result property="createTime" column="create_time"/>
+        <result property="agreesTime" column="agrees_time"/>
+        <result property="status" column="status"/>
+        <association property="companyid" javaType="Company">
+            <id property="id" column="companyId"/>
+            <result property="name" column="name"/>
+            <result property="shouxufei" column="shouxufei"/>
+        </association>
+    </resultMap>
+    <sql id="PresentSql">
+        p.id,
+        p.companyId,
+        p.price,
+        p.create_time,
+        p.agrees_time,
+        p.status,
+        c.name,
+        p.shouxufei,
+        p.real_price
+     </sql>
+    <sql id="PresentWhere">
+        <where>
+            <if test="id!=null">
+                AND id=#{id}
+            </if>
+            <if test="companyid!=null">
+                <if test="companyid.id != null">
+                    AND companyId=#{companyid.id}
+                </if>
+            </if>
+            <if test="price!=null">
+                AND price=#{price}
+            </if>
+            <if test="createTime!=null">
+                AND create_time=#{createTime}
+            </if>
+            <if test="agreesTime!=null">
+                AND agrees_time=#{agreesTime}
+            </if>
+            <if test="status!=null">
+                AND p.status=#{status}
+            </if>
+            <if test="startTime !=null ">
+                <![CDATA[AND DATE_FORMAT(p.agrees_time,"%Y-%m-%d") > DATE_FORMAT(#{startTime},"%Y-%m-%d")]]>
+            </if>
+            <if test="endTime !=null">
+                <![CDATA[AND DATE_FORMAT(p.agrees_time,"%Y-%m-%d") < DATE_FORMAT(#{endTime},"%Y-%m-%d")]]>
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="selectPresent" resultMap="presentRequesMap" parameterType="Present">
+        SELECT
+        <include refid="PresentSql"/>
+        FROM t_present p
+        LEFT JOIN t_company c ON c.id = p.companyId
+        <include refid="PresentWhere"/>
+        <include refid="common.pager"></include>
+    </select>
+
+    <select id="selectPresentCount" resultType="Integer" parameterType="Present">
+        SELECT COUNT(1)
+        FROM t_present p
+        LEFT JOIN t_company c ON c.id = p.companyId
+        <include refid="PresentWhere"/>
+    </select>
+
+    <select id="selectPresentNum" resultType="Double" parameterType="Present">
+        SELECT SUM(p.price)
+        FROM t_present p
+        LEFT JOIN t_company c ON c.id = p.companyId
+        <include refid="PresentWhere"/>
+    </select>
+
+    <select id="selectPresentRealNum" resultType="Double" parameterType="Present">
+        SELECT SUM(p.real_price)
+        FROM t_present p
+        LEFT JOIN t_company c ON c.id = p.companyId
+        <include refid="PresentWhere"/>
+    </select>
+
+
+    <insert id="insetPresent" parameterType="Present">
+        INSERT INTO t_present
+        (
+        <trim suffixOverrides=",">
+            <if test="companyid!=null">
+                companyId,
+            </if>
+            <if test="price!=null">
+                price,
+            </if>
+            <if test="realPrice!=null">
+                real_price,
+            </if>
+            <if test="shouxufei!=null">
+                shouxufei,
+            </if>
+                create_time,
+            <if test="status!=null">
+                status,
+            </if>
+        </trim>
+        )
+        VALUE
+        (
+        <trim suffixOverrides=",">
+            <if test="companyid!=null">
+                #{companyid.id},
+            </if>
+            <if test="price!=null">
+                #{price},
+            </if>
+            <if test="realPrice!=null">
+                #{realPrice},
+            </if>
+            <if test="shouxufei!=null">
+                #{shouxufei},
+            </if>
+                sysdate(),
+            <if test="status!=null">
+                #{status},
+            </if>
+        </trim>)
+    </insert>
+
+    <update id="updatePresent" parameterType="Present">
+        UPDATE t_present
+        SET agrees_time = sysdate(),status = 1
+        WHERE id = #{id} AND status = 0;
+    </update>
+
+
+
+</mapper>

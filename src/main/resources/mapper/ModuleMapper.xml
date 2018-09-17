@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.ModuleMapper">
+
+	<resultMap type="module" id="moduleResultMap">
+		<id property="id" column="id" />
+		<result property="parentId" column="parent_id" />
+		<result property="modName" column="mod_name" />
+		<result property="modPath" column="mod_path" />
+		<result property="modParam" column="mod_param" />
+		<result property="modIcon" column="mod_icon" />
+		<result property="modFlag" column="mod_flag" />
+	</resultMap>
+
+	<select id="findByCondition" resultMap="moduleResultMap" parameterType="ModuleVo">
+		SELECT id,parent_id,mod_name,mod_path,mod_param,mod_icon,mod_flag
+		FROM t_module
+		<where>
+            <if test="flag != null">
+                AND mod_flag IN <foreach item="idx" collection="flag" open="(" separator="," close=")"> #{idx} </foreach>
+            </if>
+            <if test="role != null">
+                AND FIND_IN_SET(id, #{role})
+            </if>
+		</where>
+	</select>
+	
+</mapper>

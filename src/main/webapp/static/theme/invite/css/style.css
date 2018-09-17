@@ -1,0 +1,48 @@
+* { margin:0; padding:0; }
+body{ margin:0 auto;  width:100% !important; height:auto; }
+ul, li { list-style:none; vertical-align: bottom;}
+a,a:link{ text-decoration:none !important; color:#000; }
+a:hover { text-decoration:underline; }
+a:active {color: none}
+a img { border:none; }
+i{font-style: normal;}
+.fl { float:left; }
+.fr { float:right; }
+.clear { clear:both; }
+.none{display: none}
+.cl:after { content:''; display:block; clear:both; }
+.article{ margin:0 auto; background: url(../images/yq_bg.png) no-repeat center; background-size:100% 100%; position:absolute; top:0; width:100%; height:100%; overflow: hidden}
+.activity{position:absolute; top:40px; right:0px; z-index: 2; width:135px; height:50px;line-height:50px; text-align: center; border-radius: 50px 0 0 50px; background:rgba(0,0,0,.3);  font-size: 24px; }
+.activity a{color:#fffbfb;}
+.inv{width:734px; height:544px; position:absolute; left:50%; margin-left:-367px; bottom:-57px; z-index: 2; background: url(../images/yq_card.png) no-repeat center;}
+.inv_all{width:660px; height:150px; margin:90px auto 0;}
+.inv_all .ce{width:50%; float: left;}
+.ce p{width:100%; text-align: center; font-size: 24px; color:#666666; font-family:}
+.ce span{display:block;width:100%; text-align: center; color:#999999; font-size:20px; padding-top:40px;font-family:}
+.ce span i{font-size: 48px;}
+.inv_left i{color:#ff404e}
+.inv_right i{color:#333333;}
+.inv_foot{width:550px; height:131px; background:url(../images/yq_butten1.png) no-repeat center; position: absolute; bottom:84px; left: 50%; margin-left:-275px;}
+
+.act_time{height:100px;line-height: 50px; margin-top: 100px; text-align:right; padding-right: 70px;}
+.article1{margin:0 auto; background: url(../images/yq_bg2.png) #ff6152 no-repeat top; position:absolute; top:0; width:100%; height:1670px !important; overflow: hidden}
+.article2{background:#fff !important;}
+.article2 .act_title{color:#000;}
+.article2 .act{margin-top:50px;}
+.article2 .act ul li{color:#000 !important;}
+.down{width:734px; height:544px;  left:50%; margin-left:-367px;  background: url(../images/yq_card.png) no-repeat center; margin-top:689px;position:relative;}
+.down_p{position:absolute; width:100%; line-height:48px; text-align: center; top:104px; font-size:28px; color: #333333;}
+.down_p1{top:82px !important;}
+.down_p2{top:82px !important;}
+#down{position:absolute; width:100%; height:100%; left:0; top:0;}
+.send_input{width:530px; height:88px; margin-left:-265px;left:50%; top:185px;position:absolute;outline: 0; text-align: center; font-size: 28px; line-height: 88px;border: none}
+.down_p p i{font-size:64px; color:#ff404e}
+.down_foot2{background:url(../images/yq_butten3.png) no-repeat center !important;}
+.down_foot1{background:url(../images/yq_butten2.png) no-repeat center !important;}
+.down_foot{position: absolute;width:550px; height:131px; background:url(../images/yq_butten1.png) no-repeat center;bottom:84px; left: 50%; margin-left:-275px;}
+.act{width:660px; height:438px; margin:22px auto 0;}
+.act_title{width:100%; height:26px; line-height: 26px;color: #eeeeee; font-size:28px; text-align: center; margin-bottom:20px;}
+.act_title:before{content: ""; background: url(../images/img_hd.png) no-repeat center;position:absolute;width:135px; height:6px;left:170px; margin-top:10px;transform:rotate(180deg)}
+.act_title:after{content: ""; background: url(../images/img_hd.png) no-repeat center;position:absolute;width:135px; height:6px;right:170px;margin-top:10px;}
+.act ul li{font-size: 24px; line-height:45px;color: #ffffff }
+.act_time{height:100px;line-height: 50px;  text-align:right; padding-right: 70px; font-size:24px;  margin:100px auto;}

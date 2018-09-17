@@ -1,0 +1,61 @@
+server:
+  port: 2003
+
+spring:
+  profiles:
+    active: dev
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      force-response: true
+    converters:
+      preferred-json-mapper: gson
+  aop:
+    auto: true
+    proxy-target-class: true
+  jpa:
+    database: mysql
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+  mvc:
+    view:
+      prefix: /WEB-INF/
+      suffix: .jsp
+  application:
+    name: order-service
+  #cache:
+    #ehcache:
+      #config: classpath:1ehcache.xml1
+  redis:
+    host: localhost
+    pool: 6379
+eureka:
+  instance:
+    hostname: 112.27.113.51
+    #hostname: localhost
+    secure-virtual-host-name: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://admin:111111@${eureka.instance.hostname}:9999/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+zuul:
+  host:
+    max-total-connections: 200
+    max-per-route-connections: 20
+  routes:
+    local:
+      path: /**
+      url: forward:/
+  add-host-header: true
+debug: false

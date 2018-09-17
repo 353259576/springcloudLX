@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.CompanyMapper">
+    <sql id="companySql">
+        c.id,
+        c.name,
+        c.address,
+        c.code,
+        c.company_brand,
+        c.status,
+        c.phone,
+        c.create_time,
+        c.zhangqi,
+        c.shouxufei,
+        c.area,
+        c.group_id,
+        d.id department_id,
+        d.name dname
+    </sql>
+    <sql id="companySqlWhere">
+        <where>
+        <if test="id!=null">
+            AND c.id=#{id}
+        </if>
+        <if test="name!=null">
+            AND c.`name`=#{name}
+        </if>
+        <if test="address!=null">
+            AND c.address=#{address}
+        </if>
+        <if test="code!=null">
+            AND c.code=#{code}
+        </if>
+        <if test="companyBrand!=null">
+            AND c.company_brand=#{companyBrand}
+        </if>
+        <if test="status!=null">
+            AND c.status=#{status}
+        </if>
+        <if test="phone!=null">
+            AND c.phone=#{phone}
+        </if>
+        <if test="createTime!=null">
+            AND c.create_time=#{createTime}
+        </if>
+        <if test="zhangqi!=null">
+            AND c.zhangqi=#{zhangqi}
+        </if>
+        <if test="shouxufei!=null">
+            AND c.shouxufei=#{shouxufei}
+        </if>
+        <if test="area!=null">
+            AND c.area=#{area}
+        </if>
+        <if test="groupId!=null">
+            AND c.group_id=#{groupId}
+        </if>
+        </where>
+    </sql>
+    <resultMap id="companyResultMap" type="Company">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+        <result property="code" column="code"/>
+        <result property="companyBrand" column="company_brand"/>
+        <result property="status" column="status"/>
+        <result property="phone" column="phone"/>
+        <result property="createTime" column="create_time"/>
+        <result property="zhangqi" column="zhangqi"/>
+        <result property="shouxufei" column="shouxufei"/>
+        <result property="area" column="area"/>
+        <result property="groupId" column="group_id"/>
+        <collection property="departmentList" javaType="ArrayList" ofType="Department">
+            <id property="id" column="department_id"/>
+            <result property="name" column="dname"/>
+        </collection>
+    </resultMap>
+
+
+
+    <select id="selectCompany" resultMap="companyResultMap" parameterType="Company">
+
+
+
+
+        SELECT <include refid="companySql"/>
+        FROM t_company c
+        LEFT JOIN t_department d ON d.company_id = c.id
+        where c.id in(select * from (select id from t_company c <include refid="companySqlWhere"/><include refid="common.pager"/>) k)
+
+
+
+
+    </select>
+
+    <select id="selectCompanyCount" resultType="Integer" parameterType="Company">
+        SELECT COUNT(1)
+        FROM t_company c
+        <include refid="companySqlWhere"/>
+    </select>
+
+
+    <insert id="insertCompany" useGeneratedKeys="true" keyProperty="id" parameterType="Company">
+        INSERT INTO t_company
+        (
+        <trim suffixOverrides=",">
+            <if test="name!=null">
+                `name`,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="code!=null">
+                code,
+            </if>
+            <if test="companyBrand!=null">
+                company_brand,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="createTime!=null">
+                create_time,
+            </if>
+            <if test="zhangqi!=null">
+                zhangqi,
+            </if>
+            <if test="shouxufei!=null">
+                shouxufei,
+            </if>
+            <if test="area!=null">
+                area,
+            </if>
+            <if test="groupId!=null">
+                group_id,
+            </if>
+        </trim>
+        )
+        VALUE
+        (
+        <trim suffixOverrides=",">
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="code!=null">
+                #{code},
+            </if>
+            <if test="companyBrand!=null">
+                #{companyBrand},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="zhangqi!=null">
+                #{zhangqi},
+            </if>
+            <if test="shouxufei!=null">
+                #{shouxufei},
+            </if>
+            <if test="area!=null">
+                #{area},
+            </if>
+            <if test="groupId!=null">
+                #{groupId},
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <update id="updateCompany" useGeneratedKeys="true" keyProperty="id" parameterType="Company">
+        UPDATE t_company
+        <set>
+            <if test="name!=null">
+                `name`=#{name},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="code!=null">
+                code=#{code},
+            </if>
+            <if test="companyBrand!=null">
+                company_brand=#{companyBrand},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="createTime!=null">
+                create_time=#{createTime},
+            </if>
+            <if test="zhangqi!=null">
+                zhangqi=#{zhangqi},
+            </if>
+            <if test="shouxufei!=null">
+                shouxufei=#{shouxufei},
+            </if>
+            <if test="area!=null">
+                area=#{area},
+            </if>
+            <if test="groupId!=null">
+                group_id=#{groupId},
+            </if>
+        </set>
+        <where>
+            <if test="id!=null">
+                AND id=#{id}
+            </if>
+        </where>
+    </update>
+
+
+
+</mapper>

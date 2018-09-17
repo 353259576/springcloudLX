@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.RoleMapper">
+
+	<resultMap type="role" id="roleResultMap">
+		<id property="id" column="id" />
+		<result property="roleName" column="role_name" />
+		<result property="roleRights" column="role_rights" />
+		<result property="isDelete" column="is_delete" />
+		<result property="roleFlag" column="role_flag" />
+	</resultMap>
+
+	<select id="findAll" resultMap="roleResultMap">
+		SELECT id,role_name,role_rights,role_flag,is_delete
+		FROM t_role
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="role">
+		INSERT INTO t_role (role_name)
+		VALUE (#{roleName})
+	</insert>
+
+	<update id="update" parameterType="role">
+		UPDATE t_role
+		<set>
+			<if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+			<if test="roleRights != null">role_rights = #{roleRights},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete" parameterType="long">
+        UPDATE t_role SET is_delete = !is_delete
+        WHERE id = #{id}
+    </update>
+
+	<select id="checkRights" resultType="int">
+		SELECT COUNT(1) FROM t_module
+		WHERE FIND_IN_SET(id, #{roleId})
+		AND mod_path = #{modPath}
+	</select>
+
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<!--******************************************************************************************************************************************************-->
+	<sql id="adminSql">
+		a.id admin_id,
+        a.admin_name,
+        a.admin_realname,
+        a.admin_password,
+        a.admin_phone,
+        a.admin_num,
+        a.admin_addr,
+        a.admin_create_time,
+        a.admin_login_time,
+        a.admin_login_ip,
+        a.admin_flag,
+        a.is_delete
+	</sql>
+	<sql id="roleSql">
+		r.id role_id,
+		r.role_name,
+		r.role_rights,
+		r.role_flag,
+		r.is_delete
+	</sql>
+	<sql id="groupSql">
+		g.group_id,
+        g.group_name,
+        g.status,
+        g.father_group_id,
+        g.overall/*,
+        g.type,
+        g.type_id*/
+	</sql>
+	<sql id="moduleSql">
+		m.id,
+		m.parent_id,
+		m.mod_name,
+		m.mod_path,
+		m.mod_param,
+		m.mod_icon,
+		m.mod_flag
+	</sql>
+    <sql id="vendorGLSql">
+        vg.vendor_type
+    </sql>
+    <sql id="companySql">
+        c.id company_id,
+        c.name company_name,
+        c.address,
+        c.code,
+        c.group_id cgroup_id,
+        c.status company_status
+    </sql>
+    <sql id="departmentSql">
+        d.id department_id,
+        d.name department_name,
+        d.status department_status,
+        d.group_id dgroup_id,
+        d.company_id dcompany_id
+
+    </sql>
+
+	<resultMap id="adminResultMap" type="Admin">
+        <id property="id" column="admin_id"/>
+        <!--<result property="roleId" column="role_id"/>-->
+        <result property="adminName" column="admin_name"/>
+        <result property="adminRealname" column="admin_realname"/>
+        <result property="adminPassword" column="admin_password"/>
+        <result property="adminPhone" column="admin_phone"/>
+        <result property="adminNum" column="admin_num"/>
+        <result property="adminAddr" column="admin_addr"/>
+        <result property="adminCreateTime" column="admin_create_time"/>
+        <result property="adminLoginTime" column="admin_login_time"/>
+        <result property="adminLoginIp" column="admin_login_ip"/>
+        <result property="adminFlag" column="admin_flag"/>
+        <result property="isDelete" column="is_delete"/>
+        <collection property="groups" javaType="List" ofType="Group" resultMap="groupResultMap"/>
+
+	</resultMap>
+    
+    <resultMap id="companyResultMap" type="Company">
+        <id property="id" column="company_id"/>
+        <result property="name" column="company_name"/>
+        <result property="address" column="address"/>
+        <result property="code" column="code"/>
+        <result property="groupId" column="cgroup_id"/>
+        <result property="status" column="company_status"/>
+    </resultMap>
+    <resultMap id="departmentResultMap" type="Department">
+        <id property="id" column="department_id"/>
+        <result property="name" column="department_name"/>
+        <result property="status" column="department_status"/>
+        <result property="groupId" column="dgroup_id"/>
+        <association property="company" javaType="Company">
+            <result property="id" column="dcompany_id"/>
+        </association>
+    </resultMap>
+
+	<resultMap id="myRoleResultMap" type="Role">
+        <id property="id" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleRights" column="role_rights"/>
+        <result property="roleFlag" column="role_flag"/>
+        <result property="isDelete" column="is_delete"/>
+	</resultMap>
+	<resultMap id="moduleResultMap" type="Module">
+		<id property="id" column="id"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="modName" column="mod_name"/>
+		<result property="modPath" column="mod_path"/>
+		<result property="modParam" column="mod_param"/>
+		<result property="modIcon" column="mod_icon"/>
+		<result property="modFlag" column="mod_flag"/>
+	</resultMap>
+    <resultMap id="groupResultMap" type="Group">
+        <id property="groupId" column="group_id"/>
+        <result property="groupName" column="group_name"/>
+        <result property="status" column="status"/>
+        <result property="fatherGroupId" column="father_group_id"/>
+        <result property="overall" column="overall"/>
+        <result property="type" column="type"/>
+        <result property="typeId" column="type_id"/>
+        <result property="depth" column="depth"/>
+        <association property="role" javaType="Role" resultMap="myRoleResultMap"/>
+        <collection property="admins" javaType="List" ofType="Admin" resultMap="adminResultMap"/>
+        <collection property="vendors" javaType="List" ofType="Object">
+            <discriminator javaType="int" column="vendor_type">
+                <case value="1" resultMap="companyResultMap" />
+                <case value="2" resultMap="departmentResultMap" />
+            </discriminator>
+        </collection>
+
+    </resultMap>
+	<!--对组进行操作********************************************************************************************************-->
+	<select id="selectGroupRoleByGroup" resultMap="groupResultMap" parameterType="Group">
+		SELECT
+		<include refid="groupSql"/>,
+		<include refid="roleSql"/>,
+		<include refid="adminSql"/>,
+        <include refid="companySql"/>,
+        <include refid="departmentSql"/>,
+        <include refid="vendorGLSql"/>
+		from `t_group` g
+		LEFT JOIN `t_group_role` gr ON g.group_id = gr.group_id
+		LEFT JOIN `t_role` r ON r.id = gr.role_id
+		LEFT JOIN `t_group_admin` ga ON ga.group_id = g.group_id
+		LEFT JOIN `t_admin` a ON a.id = ga.admin_id
+        LEFT JOIN `t_vendor_gl` vg ON vg.group_id = g.group_id
+        LEFT JOIN `t_company` c ON vg.vendor_id = c.id AND vg.vendor_type = 1
+        LEFT JOIN `t_department` d ON d.id = vg.vendor_id AND vg.vendor_type = 2
+		WHERE 0=0
+		<if test="groupId != null">
+			AND g.group_id = #{groupId}
+		</if>
+		<if test="groupName != null and groupName != ''">
+			AND g.group_name LIKE '%${groupName}%'
+		</if>
+	</select>
+    <insert id="insertGroup" useGeneratedKeys="true" keyProperty="groupId" parameterType="Group">
+        INSERT INTO t_group
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="groupName!=null">
+            group_name,
+        </if>
+        <if test="status!=null">
+            status,
+        </if>
+        <if test="fatherGroupId!=null">
+            father_group_id,
+        </if>
+        <if test="overall!=null">
+            overall,
+        </if>
+        <if test="type!=null">
+            type,
+        </if>
+        <if test="typeId!=null">
+            type_id,
+        </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="groupName!=null">
+            #{groupName},
+        </if>
+        <if test="status!=null">
+            #{status},
+        </if>
+        <if test="fatherGroupId!=null">
+            #{fatherGroupId},
+        </if>
+        <if test="overall!=null">
+            #{overall},
+        </if>
+        <if test="type!=null">
+            #{type},
+        </if>
+        <if test="typeId!=null">
+            #{typeId},
+        </if>
+        </trim>
+    </insert>
+    <select id="selectGroupRoleGL" resultType="Long" parameterType="Group">
+        SELECT group_id FROM t_group_role WHERE group_id = #{groupId}
+    </select>
+    <insert id="insertGroupRoleGL"  parameterType="Group">
+        INSERT INTO t_group_role(group_id,role_id) VALUE (#{groupId},#{role.id})
+    </insert>
+    <update id="updateGroup" parameterType="Group">
+        UPDATE t_group
+        SET
+        <trim suffixOverrides=",">
+            <if test="groupName!=null">
+                group_name=#{groupName},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="fatherGroupId!=null">
+                father_group_id=#{fatherGroupId},
+            </if>
+            <if test="overall!=null">
+                overall=#{overall},
+            </if>
+            <if test="type!=null">
+                type=#{type},
+            </if>
+            <if test="typeId!=null">
+                type_id=#{typeId},
+            </if>
+        </trim>
+        WHERE group_id = #{groupId}
+    </update>
+
+	<select id="selectGroupAdminByGroup" resultMap="groupResultMap" parameterType="Group">
+		SELECT
+		<include refid="adminSql"/>,
+		<include refid="groupSql"/>
+		FROM `t_group_admin` ga
+		LEFT JOIN `t_group` g ON g.group_id = ga.group_id
+		LEFT JOIN `t_admin` a ON a.id = ga.admin_id
+		WHERE 0=0
+		<if test="groupId != null">
+			AND g.group_id = #{groupId}
+		</if>
+
+	</select>
+	<!--对管理员进行操作**************************************************************************************************************-->
+	<select id="selectAdminRoleByAdmin" resultMap="adminResultMap" parameterType="Admin">
+		SELECT
+		<include refid="adminSql"/>,
+		<include refid="roleSql"/>,
+        <include refid="groupSql"/>,
+        <include refid="vendorGLSql"/>
+        FROM `t_group_admin` ga
+        LEFT JOIN `t_admin` a ON a.id = ga.admin_id
+        LEFT JOIN `t_group` g ON g.group_id = ga.group_id
+        LEFT JOIN `t_group_role` gr ON gr.group_id = g.group_id
+        LEFT JOIN `t_role` r ON gr.role_id = r.id
+        LEFT JOIN `t_company` c ON vg.vendor_id = c.id AND vg.vendor_type = 1
+        LEFT JOIN `t_department` d ON d.id = vg.vendor_id AND vg.vendor_type = 2
+		/*FROM `t_admin_role` ar
+		LEFT JOIN `t_admin` a ON a.id = ar.admin_id
+		LEFT JOIN `t_role` r ON r.id = ar.role_id
+        LEFT JOIN `t_group_admin` ga ON ga.admin_id = a.id
+        LEFT JOIN `t_group` g ON g.group_id = ga.group_id
+        LEFT JOIN `t_vendor_gl` vg ON vg.group_id = g.group_id
+        LEFT JOIN  `t_vendor` v ON v.id = vg.vendor_id
+		WHERE 0=0*/
+		<if test="adminId != null">
+			AND a.admin_id = #{admin_id}
+		</if>
+		<if test="adminName != null and adminName != ''">
+			AND a.adminName LIKE '%${adminName}%'
+		</if>
+
+	</select>
+    <select id="selectAdminByphone" resultMap="adminResultMap" parameterType="String">
+
+    </select>
+    <insert id="insertAdminGroup" parameterType="Long">
+        INSERT INTO t_group_admin(group_id,admin_id) VALUE(#{groupId},#{adminId})
+    </insert>
+    <insert id="insertGroupVendor" parameterType="Map">
+        INSERT INTO t_vendor_gl(`vendor_id`,`group_id`,`vendor_type`) VALUE (#{vendorId},#{groupId},#{vendorType})
+    </insert>
+    <delete id="deleteAdminGroup" parameterType="Long">
+        DELETE FROM t_group_admin WHERE group_id = #{groupId} AND admin_id = #{adminId}
+    </delete>
+    <delete id="deleteGroupVendor" parameterType="Long">
+        DELETE FROM t_vendor_gl WHERE group_id = #{groupId} AND vendor_id = #{vendorId} AND vendor_type = #{mode}
+    </delete>
+    <select id="selectGroupByRole" parameterType="Long" resultType="Long">
+        SELECT group_id FROM t_group_role WHERE role_id = #{roleId}
+    </select>
+    <select id="selectCompany" resultMap="companyResultMap" parameterType="BaseVo">
+        SELECT
+        <include refid="companySql"/>
+        FROM `t_company` c
+        WHERE 0=0
+        <if test="name!=null and name!=''">
+            AND name LIKE '%${name}%'
+        </if>
+        <include refid="common.pager"></include>
+    </select>
+    <select id="selectCompanyCount" resultType="Integer">
+        SELECT
+        COUNT(1)
+        FROM `t_company` c
+        <where>
+            <if test="name!=null and name!=''">
+                AND name LIKE '%${name}%'
+            </if>
+        </where>
+
+    </select>
+    <select id="selectdepartment" resultMap="departmentResultMap" parameterType="BaseVo">
+        SELECT
+        <include refid="departmentSql"/>
+        FROM `t_department` d
+        WHERE
+        0=0
+        AND d.status > 0
+        <if test="name!=null and name!=''">
+           AND name LIKE '%${name}%'
+        </if>
+        <if test="company != null">
+            <if test="company.id != null">
+                AND d.company_id = #{company.id}
+            </if>
+        </if>
+        <include refid="common.pager"></include>
+    </select>
+    <select id="selectdepartmentCount" resultType="Integer">
+        SELECT
+        COUNT(1)
+        FROM `t_department` d
+        <where>
+            d.status > 0
+            <if test="name!=null and name!=''">
+                AND name LIKE '%${name}%'
+            </if>
+            <if test="company != null">
+                <if test="company.id != null">
+                    AND d.company_id = #{company.id}
+                </if>
+            </if>
+        </where>
+
+    </select>
+	<!--对权限进行操作*************************************************************************************************************************-->
+
+	<!--获取所有Module-->
+	<select id="selectModelAllByModule" resultMap="moduleResultMap" parameterType="Module">
+		SELECT
+		<include refid="moduleSql"/>
+		FROM `t_model`
+		WHERE 0=0
+		<if test="modName != null">
+			AND mod_name LIKE '%${modName}%'
+		</if>
+		<if test="modPath != null">
+			AND mod_path LIKE '%${modPath}%'
+		</if>
+	</select>
+
+
+
+
+	
+</mapper>

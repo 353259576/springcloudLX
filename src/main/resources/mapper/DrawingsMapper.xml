@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ws.java.order.dao.mapper.DrawingsMapper">
+    
+    <select id="selectDrawingsPrice" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(d.draw_price)
+        from d_drawings d
+        <where>
+            <if test="drawCompanyId != null">
+                and d.draw_company_id = #{drawCompanyId}
+            </if>
+            <if test="startTime != null">
+                <![CDATA[and d.draw_create_date >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]]>
+            </if>
+            <if test="endTime != null">
+                <![CDATA[and d.draw_create_date < DATE_FORMAT(#{endTime},'%Y-%m-%d')]]]>
+            </if>
+            <if test="drawStatus != null">
+                and d.draw_status in (
+                <foreach collection="drawStatus" item="childstatus" separator=",">
+                    #{childstatus}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+    <update id="updateDrawings" parameterType="org.ws.java.order.model.po.DrawingsPO">
+        update d_drawings
+        <set>
+            <if test="drawPrice!=null">
+                draw_price=#{drawPrice},
+            </if>
+            <if test="drawUserPrice!=null">
+                draw_user_price=#{drawUserPrice},
+            </if>
+            <if test="drawAgencyPrice!=null">
+                draw_agency_price=#{drawAgencyPrice},
+            </if>
+            <if test="drawCompanyId!=null">
+                draw_company_id=#{drawCompanyId},
+            </if>
+            <if test="drawCreateUser!=null">
+                draw_create_user=#{drawCreateUser},
+            </if>
+            <if test="drawCreateDate!=null">
+                draw_create_date=#{drawCreateDate},
+            </if>
+            <if test="drawUpdateUser!=null">
+                draw_update_user=#{drawUpdateUser},
+            </if>
+            <if test="drawUpdateDate!=null">
+                draw_update_date=#{drawUpdateDate},
+            </if>
+            <if test="drawStatus!=null">
+                draw_status=#{drawStatus},
+            </if>
+            <if test="drawName!=null">
+                draw_name=#{drawName},
+            </if>
+            <if test="drawType!=null">
+                draw_type=#{drawType},
+            </if>
+        </set>
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+        </where>
+    </update>
+
+
+    
+</mapper>

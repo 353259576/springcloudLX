@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ws.java.order.dao.mapper.CompanySummaryMapper">
+
+
+
+    <sql id="companySummaryWhereSql">
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="summaryName!=null">
+                and summary_name=#{summaryName}
+            </if>
+            <if test="summaryUsernum!=null">
+                and summary_usernum=#{summaryUsernum}
+            </if>
+            <if test="summaryUserpriceAll!=null">
+                and summary_userprice_all=#{summaryUserpriceAll}
+            </if>
+            <if test="summaryOrdernum!=null">
+                and summary_ordernum=#{summaryOrdernum}
+            </if>
+            <if test="summaryOrderprice!=null">
+                and summary_orderprice=#{summaryOrderprice}
+            </if>
+            <if test="summaryAgentprice!=null">
+                and summary_agentprice=#{summaryAgentprice}
+            </if>
+            <if test="summaryCreateDate!=null">
+                and summary_create_date=#{summaryCreateDate}
+            </if>
+            <if test="companyId != null">
+                and company_id = #{companyId}
+            </if>
+            <if test="startTime != null">
+                <![CDATA[and summary_create_date >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]]>
+            </if>
+            <if test="endTime != null">
+                <![CDATA[and summary_create_date <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]]>
+            </if>
+        </where>
+    </sql>
+
+
+
+    <select id="selectCompanySummaryUserNumAll" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select sum(summary_usernum)
+        from d_company_summary
+        <include refid="companySummaryWhereSql"/>
+    </select>
+    <select id="selectCompanySummaryOrderNumAll" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select sum(summary_usernum)
+        from d_company_summary
+        <include refid="companySummaryWhereSql"/>
+    </select>
+    <select id="selectCompanySummaryUserpriceAll" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(summary_userprice_all)
+        from d_company_summary
+        <include refid="companySummaryWhereSql"/>
+    </select>
+    <select id="selectCompanySummaryOrderPriceAll" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(summary_orderprice)
+        from d_company_summary
+        <include refid="companySummaryWhereSql"/>
+    </select>
+    <select id="selectCompanySummaryAgentPriceAll" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(summary_agentprice)
+        from d_company_summary
+        <include refid="companySummaryWhereSql"/>
+    </select>
+
+</mapper>

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ws.java.order.dao.mapper.OrderMapper">
+    <resultMap id="orderResultMap" type="org.ws.java.order.model.po.OrderPO">
+        <id property="id" column="id"/>
+        <result property="orderName" column="order_name"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="orderPromulgator" column="order_promulgator"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="orderPrice" column="order_price"/>
+        <result property="orderPredictPrice" column="order_predict_price"/>
+        <result property="orderRealPrice" column="order_real_price"/>
+        <result property="orderRealNum" column="order_real_num"/>
+        <result property="orderAgencyPrice" column="order_agency_price"/>
+        <result property="orderAgencyAllPrice" column="order_agency_all_price"/>
+        <result property="orderCreateUser" column="order_create_user"/>
+        <result property="orderCreateDate" column="order_create_date"/>
+        <result property="orderUpdateUser" column="order_update_user"/>
+        <result property="orderUpdateDate" column="order_update_date"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="orderType" column="order_type"/>
+        <result property="orderRemake" column="order_remake"/>
+        <result property="orderAllNum" column="order_all_num"/>
+        <result property="orderEffectiveDate" column="order_effective_date"/>
+    </resultMap>
+
+    <sql id="orderSql">
+        o.id,
+        o.order_name,
+        o.order_no,
+        o.order_promulgator,
+        o.order_num,
+        o.order_price,
+        o.order_predict_price,
+        o.order_real_price,
+        o.order_real_num,
+        o.order_agency_price,
+        o.order_agency_all_price,
+        o.order_create_user,
+        o.order_create_date,
+        o.order_update_user,
+        o.order_update_date,
+        o.order_status,
+        o.order_type,
+        o.order_remake,
+        o.order_all_num,
+        o.order_effective_date
+    </sql>
+
+    <sql id="orderWhereSql">
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+        <if test="orderName!=null">
+            and order_name=#{orderName}
+        </if>
+        <if test="orderNo!=null">
+            and order_no=#{orderNo}
+        </if>
+        <if test="orderPromulgator!=null">
+            and order_promulgator=#{orderPromulgator}
+        </if>
+        <if test="orderNum!=null">
+            and order_num=#{orderNum}
+        </if>
+        <if test="orderPrice!=null">
+            and order_price=#{orderPrice}
+        </if>
+        <if test="orderPredictPrice!=null">
+            and order_predict_price=#{orderPredictPrice}
+        </if>
+        <if test="orderRealPrice!=null">
+            and order_real_price=#{orderRealPrice}
+        </if>
+        <if test="orderRealNum!=null">
+            and order_real_num=#{orderRealNum}
+        </if>
+        <if test="orderAgencyPrice!=null">
+            and order_agency_price=#{orderAgencyPrice}
+        </if>
+        <if test="orderAgencyAllPrice!=null">
+            and order_agency_all_price=#{orderAgencyAllPrice}
+        </if>
+        <if test="orderCreateUser!=null">
+            and order_create_user=#{orderCreateUser}
+        </if>
+        <if test="orderCreateDate!=null">
+            and order_create_date=#{orderCreateDate}
+        </if>
+        <if test="orderUpdateUser!=null">
+            and order_update_user=#{orderUpdateUser}
+        </if>
+        <if test="orderUpdateDate!=null">
+            and order_update_date=#{orderUpdateDate}
+        </if>
+        <if test="orderStatus!=null">
+            and order_status=#{orderStatus}
+        </if>
+        <if test="orderType!=null">
+            and order_type=#{orderType}
+        </if>
+    </sql>
+
+    <sql id="childOrderWhereSql">
+        <where>
+            <if test="childOrderStatus != null">
+                and od.child_order_status in (
+                <foreach collection="childOrderStatus" item="childstatus" separator=",">
+                    #{childstatus}
+                </foreach>
+                )
+            </if>
+            <if test="childOrderCompanyId != null">
+                and od.child_order_company_id = #{childOrderCompanyId}
+            </if>
+            <if test="parentOrderId != null">
+                and parent_order_id = #{parentOrderId}
+            </if>
+            <if test="orderPromulgator != null">
+                and order_promulgator = #{orderPromulgator}
+            </if>
+            <if test="userName!=null">
+                and user_name=#{userName}
+            </if>
+            <if test="userPhone!=null">
+                and user_phone=#{userPhone}
+            </if>
+            <if test="userIdcode!=null">
+                and user_idcode=#{userIdcode}
+            </if>
+            <if test="startTime != null">
+                <![CDATA[ and od.child_order_create_date >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]>
+            </if>
+
+            <if test="endTime != null">
+                <![CDATA[and od.child_order_create_date < DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectOrderByUser" resultMap="orderResultMap" parameterType="java.util.Map">
+        select
+          <include refid="orderSql" />
+        from d_order o
+        left join d_order_company_bind oc on oc.order_id = o.id
+        <where>
+            and (order_type = 1 or (order_type = 2 and oc.company_id = #{companyId}))
+            <if test="orderStatus != null">
+                and order_status = #{orderStatus}
+            </if>
+            <if test="orderNum != null">
+                and order_num > #{orderNum}
+            </if>
+            <if test="orderName!=null">
+                and order_name=#{orderName}
+            </if>
+            <if test="orderNo!=null">
+                and order_no=#{orderNo}
+            </if>
+            <if test="startTime != null">
+                and <![CDATA[ DATE_FORMAT(order_effective_date,"%Y-%m-%d") >= DATE_FORMAT(#{startTime},"%Y-%m-%d")]]>
+            </if>
+            <if test="endTime != null">
+                and <![CDATA[ DATE_FORMAT(order_effective_date,"%Y-%m-%d") < DATE_FORMAT(#{endTime},"%Y-%m-%d")]]>
+            </if>
+        </where>
+
+    </select>
+
+    <update id="updateOrder" parameterType="OrderPO">
+        update
+          d_order
+        <set>
+        <if test="orderName!=null">
+            order_name=#{orderName},
+        </if>
+        <if test="orderNo!=null">
+            order_no=#{orderNo},
+        </if>
+        <if test="orderPromulgator!=null">
+            order_promulgator=#{orderPromulgator},
+        </if>
+        <if test="orderNum!=null">
+            order_num=#{orderNum},
+        </if>
+        <if test="orderPrice!=null">
+            order_price=#{orderPrice},
+        </if>
+        <if test="orderPredictPrice!=null">
+            order_predict_price=#{orderPredictPrice},
+        </if>
+        <if test="orderRealPrice!=null">
+            order_real_price=#{orderRealPrice},
+        </if>
+        <if test="orderRealNum!=null">
+            order_real_num=#{orderRealNum},
+        </if>
+        <if test="orderAgencyPrice!=null">
+            order_agency_price=#{orderAgencyPrice},
+        </if>
+        <if test="orderAgencyAllPrice!=null">
+            order_agency_all_price=#{orderAgencyAllPrice},
+        </if>
+        <if test="orderCreateUser!=null">
+            order_create_user=#{orderCreateUser},
+        </if>
+        <if test="orderCreateDate!=null">
+            order_create_date=#{orderCreateDate},
+        </if>
+        <if test="orderUpdateUser!=null">
+            order_update_user=#{orderUpdateUser},
+        </if>
+        <if test="orderUpdateDate!=null">
+            order_update_date=#{orderUpdateDate},
+        </if>
+        <if test="orderStatus!=null">
+            order_status=#{orderStatus},
+        </if>
+        <if test="orderType!=null">
+            order_type=#{orderType},
+        </if>
+        <if test="orderRemake!=null">
+            order_remake=#{orderRemake},
+        </if>
+        <if test="orderAllNum!=null">
+            order_all_num=#{orderAllNum},
+        </if>
+        <if test="orderEffectiveDate!=null">
+            order_effective_date=#{orderEffectiveDate},
+        </if>
+        <if test="orderIdcodeIndex!=null">
+            order_idcode_index=#{orderIdcodeIndex},
+        </if>
+        </set>
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+        </where>
+    </update>
+
+
+
+
+    <update id="updateChildOrder" parameterType="ChildOrderPO">
+        update d_order_detail
+        <set>
+            <if test="userName!=null">
+                user_name=#{userName},
+            </if>
+            <if test="userPhone!=null">
+                user_phone=#{userPhone},
+            </if>
+            <if test="userIdcode!=null">
+                user_idcode=#{userIdcode},
+            </if>
+            <if test="parentOrderId!=null">
+                parent_order_id=#{parentOrderId},
+            </if>
+            <if test="childOrderNo!=null">
+                child_order_no=#{childOrderNo},
+            </if>
+            <if test="childOrderRemake!=null">
+                child_order_remake=#{childOrderRemake},
+            </if>
+            <if test="childFailedRemake!=null">
+                child_failed_remake=#{childFailedRemake},
+            </if>
+            <if test="childOrderUpdateDate!=null">
+                child_order_update_date=#{childOrderUpdateDate},
+            </if>
+            <if test="childOrderUpdateUser!=null">
+                child_order_update_user=#{childOrderUpdateUser},
+            </if>
+            <if test="childOrderStatus!=null">
+                child_order_status=#{childOrderStatus},
+            </if>
+            <if test="childOrderCompanyId!=null">
+                child_order_company_id=#{childOrderCompanyId},
+            </if>
+            <if test="childOrderCreateDate!=null">
+                child_order_create_date=#{childOrderCreateDate},
+            </if>
+            <if test="orderPromulgator!=null">
+                order_promulgator=#{orderPromulgator},
+            </if>
+            <if test="parentOrderName!=null">
+                parent_order_name=#{parentOrderName},
+            </if>
+            <if test="childOrderMsg!=null">
+                child_order_msg=#{childOrderMsg},
+            </if>
+            <if test="orderRealPrice!=null">
+                order_real_price=#{orderRealPrice},
+            </if>
+            <if test="orderAgencyPrice!=null">
+                order_agency_price=#{orderAgencyPrice},
+            </if>
+            <if test="orderIdcodeIndex!=null">
+                order_idcode_index=#{orderIdcodeIndex},
+            </if>
+        </set>
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="parentOrderId!=null">
+                and parent_order_id=#{parentOrderId}
+            </if>
+        </where>
+
+    </update>
+
+
+
+
+
+
+
+    <select id="selectChildOrderCountGroup" resultType="ReturnKeyValueVO" parameterType="java.util.Map">
+
+        SELECT COUNT(id) as datavalue,DATE_FORMAT(od.child_order_create_date,'%Y-%m-%d') as datevalue
+        FROM d_order_detail od
+        <include refid="childOrderWhereSql"/>
+
+        GROUP BY DATE_FORMAT(od.child_order_create_date,'%Y-%m-%d')
+    </select>
+
+
+    <select id="selectChildOrderCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+
+        SELECT COUNT(id) as datavalue
+        FROM d_order_detail od
+        <include refid="childOrderWhereSql"/>
+    </select>
+
+
+
+
+
+    <select id="selectChildOrderRealPriceGroup" resultType="ReturnKeyValueVO" parameterType="java.util.Map">
+
+        SELECT sum(order_real_price) as datavalue,DATE_FORMAT(od.child_order_create_date,'%Y-%m-%d') as datevalue
+        FROM d_order_detail od
+        <include refid="childOrderWhereSql"/>
+
+        GROUP BY DATE_FORMAT(od.child_order_create_date,'%Y-%m-%d')
+    </select>
+
+
+    <select id="selectChildOrderAgencyPriceGroup" resultType="ReturnKeyValueVO" parameterType="java.util.Map">
+
+        SELECT sum(order_agency_price) as datavalue,DATE_FORMAT(od.child_order_create_date,'%Y-%m-%d') as datevalue
+        FROM d_order_detail od
+        <include refid="childOrderWhereSql"/>
+
+        GROUP BY DATE_FORMAT(od.child_order_create_date,'%Y-%m-%d')
+    </select>
+
+
+    <select id="selectChildOrderRealPrice" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(order_real_price)
+        from d_order_detail od
+        <include refid="childOrderWhereSql"/>
+    </select>
+
+    <select id="selectChildOrderAgencyPrice" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(order_agency_price)
+        from d_order_detail od
+        <include refid="childOrderWhereSql"/>
+    </select>
+
+    <select id="selectChildOrderUserCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        SELECT COUNT(*)
+        FROM (
+        select sum(od.user_phone)
+        from d_order_detail od
+        <include refid="childOrderWhereSql"/>
+        GROUP BY od.user_phone) AS ks
+    </select>
+
+
+
+
+</mapper>

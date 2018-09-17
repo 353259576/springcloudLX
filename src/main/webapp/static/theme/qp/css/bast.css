@@ -1,0 +1,238 @@
+@media screen and (max-width: 300px) {
+    body {
+        font-size: 12px !important
+    }
+}
+
+@media screen and (max-width: 310px) and (min-width: 301px) {
+    body {
+        font-size: 12px !important
+    }
+}
+
+@media screen and (max-width: 320px) and (min-width: 311px) {
+    body {
+        font-size: 12px !important
+    }
+}
+
+@media screen and (max-width: 350px) and (min-width: 321px) {
+    body {
+        font-size: 12px !important
+    }
+}
+
+@media screen and (max-width: 360px) and (min-width: 351px) {
+    body {
+        font-size: 12px !important
+    }
+}
+
+@media screen and (max-width: 470px) and (min-width: 361px) {
+    body {
+        font-size: 12px !important
+    }
+}
+
+@media screen and (max-width: 480px) and (min-width: 471px) {
+    body {
+        font-size: 12px !important
+    }
+}
+
+@media screen and (min-width: 480px) {
+    body {
+        font-size: 12px !important
+    }
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Microsoft YaHei, Helvetica, sans-serif;
+    color: #000;
+}
+
+a {
+    text-decoration: none;
+    border: 0px;
+}
+
+li {
+    list-style: none;
+}
+
+img {
+    border: 0px;
+}
+
+p, li, a, span, h1, h2, h3, h4, h5 {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Microsoft YaHei, Helvetica, sans-serif;
+    margin: 0 auto;
+    background-color: #fafafa;
+}
+
+.kj {
+    min-width: 300px;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    height: auto;
+    background-color: #fff;
+}
+
+.hide {
+    width: 100%;
+    height: 60px;
+    position: relative;
+}
+
+.hide h2 {
+    color: #3bc16a;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 60px;
+    letter-spacing: 2px;
+}
+
+.qj {
+    width: 92%;
+    height: auto;
+    overflow: hidden;
+    padding: 3% 4%;
+}
+
+.item {
+    width: 100%;
+    height: 250px;
+    margin-bottom: 30px;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);;
+    border-radius: 10px;
+    background-color: #b1e6c3;
+}
+
+.item_img {
+    width: 100%;
+    height: 160px;
+    border-radius: 10px;
+    background-color: red;
+}
+
+.item_img img {
+    width: 100%;
+    height: 160px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.item_ms {
+    width: 96%;
+    padding: 0 2%;
+    height: 90px;
+    background-color: #ffffff;
+    border-radius: 0px 0px 10px 10px;
+    position: relative;
+}
+
+.item_ms h2 {
+    font-size: 1.3em;
+    font-weight: normal;
+    padding-top: 5px;
+}
+
+.item_ms p {
+    padding-top: 5px;
+}
+
+.item_ms p span {
+    font-size: 1.5em;
+    padding-right: 10px;
+    color: #ff404e;
+}
+
+.item_ms p strong {
+    text-decoration: line-through;
+    font-weight: normal;
+    color: #666666;
+}
+
+.item_ms ul {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    padding-top: 5px;
+}
+
+.item_ms ul li {
+    float: left;
+    height: 32px;
+    padding: 0 20px;
+    font-size: 14px;
+    color: #999999;
+}
+
+.item_button {
+
+}
+
+.item_button a {
+    color: #ffffff;
+    display: block;
+    padding: 5px;
+    width: 60px;
+    text-align: center;
+    font-size: 1.3em;
+    color: #ffffff;
+    background: -webkit-linear-gradient(left, #3bc16a, #47cf3f);
+    background: -o-linear-gradient(right, #3bc16a, #47cf3f);
+    background: -moz-linear-gradient(right, #3bc16a, #47cf3f);
+    background: linear-gradient(to right, #3bc16a, #47cf3f);
+    border-radius: 50px;
+    position: absolute;
+    bottom: 13px;
+    right: 13px;
+    cursor: pointer;
+}
+
+.bot {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 99999;
+    display: none;
+}
+
+.bots {
+    width: 180px;
+    height: 100px;
+    background-color: #ffffff;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -90px;
+}
+
+.bots h2 {
+    text-align: center;
+    padding-top: 10px;
+    font-weight: normal;
+}
+
+.bots button {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 20px 5px 0 5px;
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ws.java.order.dao.mapper.MsgMapper">
+    <resultMap id="msgresultMap" type="org.ws.java.order.model.po.MsgPO">
+        <id property="id" column="id"/>
+        <result property="msgName" column="msg_name"/>
+        <result property="msgContext" column="msg_context"/>
+        <result property="msgSendCompany" column="msg_send_company"/>
+        <result property="msgCreateDate" column="msg_create_date"/>
+        <result property="msgCreateUser" column="msg_create_user"/>
+        <result property="msgStatus" column="msg_status"/>
+        <result property="msgRead" column="msg_read"/>
+        <result property="msgType" column="msg_type"/>
+        <result property="msgSendUser" column="msg_send_user"/>
+    </resultMap>
+
+
+    <sql id="msgSql">
+        d.id,
+        d.msg_name,
+        d.msg_context,
+        d.msg_send_company,
+        d.msg_create_date,
+        d.msg_create_user,
+        d.msg_status,
+        d.msg_read,
+        d.msg_type,
+        d.msg_send_user
+    </sql>
+
+
+    <select id="selectUserMsgByUser" resultMap="msgresultMap" parameterType="java.util.Map">
+        select <include refid="msgSql"/>
+        from d_msg d
+        <where>
+            and (
+            (d.msg_send_company is null and  d.msg_send_user is null )
+            <if test="msgSendCompany != null">
+                or d.msg_send_company = #{msgSendCompany}
+            </if>
+            <if test="msgSendUser != null">
+                or (d.msg_send_user = #{msgSendUser} or d.msg_create_user = #{msgSendUser})
+            </if>
+            )
+            and d.msg_status = 1
+            <if test="id != null">
+                and d.id > #{id}
+            </if>
+        </where>
+        order by d.msg_create_date desc
+    </select>
+
+
+
+</mapper>

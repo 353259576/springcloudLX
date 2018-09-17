@@ -1,0 +1,206 @@
+﻿
+html,
+body {
+  font-family: 'microsoft yahei', 'Myriad Set Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #eee;
+  color: #666;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  min-height: 100%;
+}
+/*设置margin和padding为0*/
+*{
+  margin: 0;
+  padding: 0;
+}
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right !important;
+}
+
+.db {
+  display: block;
+}
+
+.tal {
+  text-align: left;
+}
+
+.tar {
+  text-align: right;
+}
+.rotate {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  display: inline-block;
+}
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-11,
+.col-12 {
+  float: left;
+}
+
+.col-1 {
+  width: 8.333333%;
+}
+
+.col-2 {
+  width: 16.66666667%;
+}
+
+.col-3 {
+  width: 25%;
+}
+
+.col-4 {
+  width: 33.33333333%;
+}
+
+.col-5 {
+  width: 41.66666667%;
+}
+
+.col-6 {
+  width: 50%;
+}
+
+.col-7 {
+  width: 58.33333333%;
+}
+
+.col-8 {
+  width: 66.66666667%;
+}
+
+.col-9 {
+  width: 75%;
+}
+
+.col-10 {
+  width: 83.33333333%;
+}
+
+.col-11 {
+  width: 91.66666667%;
+}
+
+.col-12 {
+  width: 100%;
+}
+textarea{outline: none}
+.auto{height: auto !important; margin-bottom: 20px;}
+.repair{width:100%; margin:0 auto;}
+.form-repair{width:95%; margin:0 auto;}
+.form-group{height:35px; line-height:35px; margin:10px auto; width:100%;}
+input{height:35px; line-height:35px; text-indent:10px;  width: 100%; border: none; outline: 0; background: #fff}
+textarea{height:100px; border: none;padding-top:10px; text-indent:2rem;}
+.btn-info{height:35px; line-height:35px; text-align: center;background: #3bc16a; outline: none; border-radius: 35px; margin:50px auto 0; border: none; color: #fff; width:30%; margin-left:35%;}
+.repair-lsit dt:nth-child(1){margin-top:0;}
+.repair-list dt {color: #000; margin-bottom:10px;}
+.repair-list dd {color: #000;line-height: 28px;display: none;}
+.checkbox input{width:15px; height:15px;display: block; float: left}
+.checkbox span{color: #3bc16a; display: none; margin-top:-6px; margin-left:5px; float: left;}
+.checkbox label i{ margin-top:-8px; margin-left:5px; font-style:normal; display: block; float: left}
+.ddiv{margin-left:0%;}
+/*扫码*/
+.scan_fl{height:50px; margin:10px auto;}
+.scan_fl img{width:50px; height: 50px; float: left; margin-left:20px; display: block;font-size: 0;}
+.scan_fr {height:50px; line-height:50px; margin:10px auto; text-indent: 10px}
+#binding{width:98%; margin:0 auto;}
+.company ,.bicycle{height:40px; line-height:40px; margin:15px auto;}
+#bicscan{text-indent:35px; height:40px; line-height:40px;}
+#comsel{height:40px; line-height:40px; outline:none; border: none;}
+.bicycle{position:relative;}
+.bicycle i{background:url(../images/scan.png) no-repeat left;background-size:30px 30px; display: block; position:absolute; left:33.33333333%; width:30px; height:30px; top:5px; margin-left:3px;}
+.none{display: none}
+input{outline: none;}
+/**公共样式结束**/
+.register-code input{
+    background: #fff;
+    border-radius: 88px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    font-size: 32px;
+    text-indent: 50px;}
+/*我的*/
+.we-infor{background:url(../images/tit6.png) no-repeat center; width:100%; height: 265px;}
+.we-loge{margin:30px 0 0 30px;}
+.we-loge,.we-loge img{width:150px; height:150px; border-radius:150px; display:block; font-size: 0;}
+.we-car{width:200px; height:140px ;font-size: 32px; line-height:40px; text-align: left;font-family: "微软雅黑"; margin:60px 0 0 60px;}
+.we-car p{line-height:40px; color:#fff}
+.we-name{line-height:55px; font-weight: bolder; padding-bottom: 5px;}
+.we-dl,.we-dl img{width:260px; height:63px; font-size:0; display: block;}
+.we-dl{margin:70px 30px 0 0;}
+.we-balance{width:100%; height: 100px; line-height: 100px; color:#fff; font-size:32px; color:#333333; text-indent:30px;}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"]{
+  -moz-appearance: textfield;
+}
+.bind-btn{width:690px; height:110px; background: url(../images/tit16.png) no-repeat center; margin:150px 30px 50px; text-align:center; line-height:88px;letter-spacing:5px; font-size:32px; color: #fff;}
+.oil-form{width:100%; background: #fff;height:auto;}
+.oil-input{width:690px;height:115px; line-height: 115px; margin:0 auto;}
+.oil-input p{float: left;width:140px; text-align: left; font-size:28px; color: #666666; height:100%;}
+/*注册*/
+.register{background: #eeeeee; margin:100px auto;}
+.register-phone ,.register-code{width:590px; height:88px; line-height:88px;  color: #999999; font-size:32px; margin:40px auto;}
+.register-phone input{background:#fff; border-radius:88px; width:100%; height:100%; border:none; display: block; font-size:32px;text-indent:50px;}
+#register1code{width:378px; float: left; height:100%;background:#fff; border-radius:88px;border:none; display: block; font-size:32px;text-indent:50px;}
+.register_btn{margin-top:86px; width:80%; height:40px; line-height:40px; text-align:center; border-radius:40px; font-size:20px;}
+.register-codeb{width:182px; text-align: center;height:100%; border-radius:88px; font-size:32px; float: right; color: #666666; background: #cccccc; border:none}
+.register_pay{ background: url(../images/tit20.png) no-repeat center; margin-top:35px !important;}
+.register_pay a{text-decoration: none; outline: 0; width:100%; text-align: center;display: block; color: #fff;}
+.sign-forget{background: none; font-size:24px; color: #3bc16a; text-align: right; width:660px; padding-right:30px; margin-top: -50px;}
+.sign-forget a{text-decoration: none; color: #3bc16a;}
+.register-phone1{line-height:50px; margin:0 auto;}
+
+.we-id{width:200px; overflow:hidden;}
+.about{background:#efefef;}
+.about img{width:150px; height:150px; display: block; margin:100px auto 30px; border-radius:150px;}
+.about span{width:100%; height:50px; display: block; line-height:50px; margin:10px auto 50px; text-align: center; color: #3fc65b; font-size:30px;}
+.oil-form-we{margin-top:50px;}
+.oil-form-we div{border-bottom: 1px #efefef solid; padding:0 30px}
+.oil-form-about div p{background: none !important;}
+.oil-form-we div p{width:100% !important; background: url(../images/right.png) no-repeat right; background-size: 35px 35px;  }
+.oil-form-we div p a{text-decoration: none; width:100%; display:block;}
+/*订单*/
+.order{background: #fff;}
+
+.order .form-group,.order-list .form-group{margin:0 auto !important;}
+.form-group   label{height:40px; line-height:40px; margin:0 !important}
+.order-rdit{width:96%; height:auto; background: #eee;  float:left; margin-bottom:10px; padding:2%;}
+.form-group-top{border-top:1px #999 solid}
+.form-group-top span{float: right; font-size:18px; color: #3bc16a; margin-right: 30px;}
+.order-list-ul{margin-top:10px;width:100%;margin:0 auto;}
+.total{font-size:17px; color:#3bc16a; margin-top:4px;}
+.order-list-li{height:auto; margin:10px auto; float: left; display: block; width:100%;}
+.order-list-li .form-group{width:96%; padding:0 2%; height:40px;  background: #fafafa}
+.order-list-li .form-group1{background: #fff !important;}
+.order-list-li .form-group p{color: #333; font-size:12px; height:40px; line-height:40px; margin:0 !important; overflow:hidden}
+.order-list-li .form-group .success{text-align: center; line-height:30px; margin:5px auto; background: #3bc16a; color: #fff; border-radius:30px;}
+.order-list-li .form-group .fail{text-align: center; line-height:30px; margin:5px auto; background: #f00; color: #fff; border-radius:30px;}
+.text-t{border:1px #eee solid;}
+#shuaxin{text-align:center; height:40px; line-height:40px;}
+.btn-warning{width:40px; line-height:40px; display:block; padding:0; margin:0; border:0; overflow:hidden;}
+#textarea{border:1px #666666 solid;}
+.repair-list{margin-top:10px; margin-bottom:10px;}
+

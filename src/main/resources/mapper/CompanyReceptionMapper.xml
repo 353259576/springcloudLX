@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ws.java.order.dao.mapper.CompanyReceptionMapper">
+    <sql id="CompanyReceptionWhereSql">
+        <where>
+            <if test="id!=null">
+                and cr.id=#{id}
+            </if>
+            <if test="userName!=null">
+                and cr.user_name=#{userName}
+            </if>
+            <if test="userPhone!=null">
+                and cr.user_phone=#{userPhone}
+            </if>
+            <if test="userReception!=null">
+                and cr.user_reception=#{userReception}
+            </if>
+            <if test="receptionType!=null">
+                and cr.reception_type=#{receptionType}
+            </if>
+            <if test="receptionPrice!=null">
+                and cr.reception_price=#{receptionPrice}
+            </if>
+            <if test="userPrice!=null">
+                and cr.user_price=#{userPrice}
+            </if>
+            <if test="allPrice!=null">
+                and cr.all_price=#{allPrice}
+            </if>
+            <if test="createDate!=null">
+                and cr.create_date=DATE_FORMAT(#{createDate} ,'%Y-%m-%d')
+            </if>
+            <if test="companyId!=null">
+                and cr.company_id=#{companyId}
+            </if>
+            <if test="drawingsId!=null">
+                and cr.drawings_id=#{drawingsId}
+            </if>
+            <if test="receptionStatus != null">
+                and cr.reception_status = #{receptionStatus}
+            </if>
+        </where>
+    </sql>
+    
+    
+    <select id="selectReceptionAllPrice" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(cr.all_price)
+        from d_company_reception cr
+        <include refid="CompanyReceptionWhereSql"/>
+    </select>
+
+    <select id="selectReceptionReceptionPrice" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(cr.reception_price)
+        from d_company_reception cr
+        <include refid="CompanyReceptionWhereSql"/>
+    </select>
+    <select id="selectReceptionUserPrice" resultType="java.lang.Double" parameterType="java.util.Map">
+        select sum(cr.user_price)
+        from d_company_reception cr
+        <include refid="CompanyReceptionWhereSql"/>
+    </select>
+
+    <select id="selectReceptionCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(cr.id)
+        from d_company_reception cr
+        <include refid="CompanyReceptionWhereSql"/>
+    </select>
+</mapper>

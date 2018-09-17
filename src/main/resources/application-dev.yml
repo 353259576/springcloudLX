@@ -1,0 +1,5 @@
+server:
+  port: 9040
+
+mypath:
+  imagehost: http://localhost:9040/image/

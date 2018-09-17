@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.ExcelMapper">
+    <sql id="excelSql">
+        e.id,
+        e.name,
+        e.create_time,
+        e.create_admin,
+        a.admin_name,
+        e.path,
+        e.status,
+        e.department_id,
+        d.name dname
+    </sql>
+
+    <sql id="excelWhereSql">
+        <where>
+            <if test="id!=null">
+                AND id=#{id}
+            </if>
+            <if test="name!=null">
+                AND name=#{name}
+            </if>
+            <if test="createTime!=null">
+                AND create_time=#{createTime}
+            </if>
+            <if test="createAdmin!=null">
+                AND create_admin=#{createAdmin.id}
+            </if>
+            <if test="path!=null">
+                AND path LIKE '%${path}%'
+            </if>
+            <if test="status!=null">
+                AND status=#{status}
+            </if>
+            <if test="department!=null">
+                AND department_id=#{department.id}
+            </if>
+        </where>
+    </sql>
+
+
+
+    <resultMap id="ExcelResultMap" type="Excel">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="path" column="path"/>
+        <result property="status" column="status"/>
+        <association property="createAdmin" javaType="Admin">
+            <id property="id" column="create_admin"/>
+            <result property="adminName" column="admin_name"/>
+        </association>
+        <association property="department" javaType="Department">
+            <id property="id" column="department_id"/>
+            <result property="name" column="dname"/>
+        </association>
+    </resultMap>
+
+    <select id="selectExcel" resultMap="ExcelResultMap" parameterType="Excel">
+        SELECT <include refid="excelSql"/>
+        FROM t_excel e
+        LEFT JOIN t_admin a ON  a.id = e.create_admin
+        LEFT JOIN t_department d ON d.id = e.department_id
+        <include refid="excelWhereSql"/>
+        <include refid="common.pager"/>
+    </select>
+
+    <select id="selectExcelCount" resultType="Integer" parameterType="Excel">
+        SELECT COUNT(1)
+        FROM t_excel e
+        LEFT JOIN t_admin a ON  a.id = e.create_admin
+        LEFT JOIN t_department d ON d.id = e.department_id
+        <include refid="excelWhereSql"/>
+    </select>
+
+
+    <insert id="insertExcel" useGeneratedKeys="true" keyProperty="id" parameterType="Excel">
+        INSERT INTO t_excel
+        (
+        <trim suffixOverrides=",">
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="createTime!=null">
+                create_time,
+            </if>
+            <if test="createAdmin!=null">
+                create_admin,
+            </if>
+            <if test="path!=null">
+                path,
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="department!=null">
+                department_id,
+            </if>
+        </trim>
+        )
+        VALUE
+        (
+        <trim suffixOverrides=",">
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="createAdmin!=null">
+                #{createAdmin.id},
+            </if>
+            <if test="path!=null">
+                #{path},
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="department!=null">
+                #{department.id},
+            </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+
+
+
+  <resultMap id="UserMsgResultMap" type="ExcelSaveUserMsg">
+      <id property="id" column="id"/>
+      <result property="userName" column="userName"/>
+      <result property="userPhone" column="userPhone"/>
+      <result property="orderRemake" column="orderRemake"/>
+      <result property="orderName" column="orderName"/>
+      <result property="orderNum" column="orderNum"/>
+      <result property="createDate" column="createDate"/>
+      <result property="adminId" column="adminId"/>
+      <result property="adminName" column="adminName"/>
+      <result property="companyId" column="companyId"/>
+      <result property="companyName" column="companyName"/>
+      <result property="departmentId" column="departmentId"/>
+      <result property="departmentName" column="departmentName"/>
+      <result property="uploadTime" column="uploadTime"/>
+      <result property="userCode" column="userCode"/>
+  </resultMap>
+
+
+
+
+
+    <select id="selectExcelUserMsg" resultMap="UserMsgResultMap" parameterType="ExcelSaveUserMsg">
+        select
+        u.id,
+        u.userName,
+        u.userPhone,
+        u.orderRemake,
+        u.orderName,
+        u.orderNum,
+        u.createDate,
+        u.adminId,
+        u.adminName,
+        u.companyId,
+        u.companyName,
+        u.departmentId,
+        u.departmentName,
+        u.uploadTime,
+        u.userCode
+        from t_uploadusermsg u
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="userName!=null">
+                and userName like '%${userName}%'
+            </if>
+            <if test="userPhone!=null">
+                and userPhone=#{userPhone}
+            </if>
+            <if test="orderRemake!=null">
+                and orderRemake=#{orderRemake}
+            </if>
+            <if test="orderName!=null">
+                and orderName like '%${orderName}%'
+            </if>
+            <if test="orderNum!=null">
+                and orderNum=#{orderNum}
+            </if>
+            <if test="createDate!=null">
+                and createDate=#{createDate}
+            </if>
+            <if test="adminId!=null">
+                and adminId=#{adminId}
+            </if>
+            <if test="adminName!=null">
+                and adminName=#{adminName}
+            </if>
+            <if test="companyId!=null">
+                and companyId=#{companyId}
+            </if>
+            <if test="companyName!=null">
+                and companyName like '%${companyName}%'
+            </if>
+            <if test="departmentId!=null">
+                and departmentId=#{departmentId}
+            </if>
+            <if test="departmentName!=null">
+                and departmentName=#{departmentName}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and <![CDATA[ DATE_FORMAT(createDate,"%Y-%m-%d HH:mm:ss") > DATE_FORMAT(#{startTime},"%Y-%m-%d")]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND
+                <![CDATA[ DATE_FORMAT(createDate,"%Y-%m-%d HH:mm:ss") < DATE_FORMAT(#{endTime},"%Y-%m-%d")]]>
+            </if>
+        </where>
+        order by orderName,createDate desc
+        <include refid="common.pager"/>
+    </select>
+
+
+
+
+
+    <select id="selectExcelUserMsgCount" resultType="Integer" parameterType="ExcelSaveUserMsg">
+        select
+        count(1)
+        from t_uploadusermsg u
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="userName!=null">
+                and userName like '%${userName}%'
+            </if>
+            <if test="userPhone!=null">
+                and userPhone=#{userPhone}
+            </if>
+            <if test="orderRemake!=null">
+                and orderRemake=#{orderRemake}
+            </if>
+            <if test="orderName!=null">
+                and orderName like '%${orderName}%'
+            </if>
+            <if test="orderNum!=null">
+                and orderNum=#{orderNum}
+            </if>
+            <if test="createDate!=null">
+                and createDate=#{createDate}
+            </if>
+            <if test="adminId!=null">
+                and adminId=#{adminId}
+            </if>
+            <if test="adminName!=null">
+                and adminName=#{adminName}
+            </if>
+            <if test="companyId!=null">
+                and companyId=#{companyId}
+            </if>
+            <if test="companyName!=null">
+                and companyName like '%${companyName}%'
+            </if>
+            <if test="departmentId!=null">
+                and departmentId=#{departmentId}
+            </if>
+            <if test="departmentName!=null">
+                and departmentName=#{departmentName}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and <![CDATA[ DATE_FORMAT(createDate,"%Y-%m-%d HH:mm:ss") > DATE_FORMAT(#{startTime},"%Y-%m-%d")]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND
+                <![CDATA[ DATE_FORMAT(createDate,"%Y-%m-%d HH:mm:ss") < DATE_FORMAT(#{endTime},"%Y-%m-%d")]]>
+            </if>
+        </where>
+    </select>
+
+
+
+
+
+    <insert id="insertExcelSaveUserMsg" parameterType="ExcelSaveUserMsg">
+        insert into t_uploadusermsg
+        (
+        <trim suffixOverrides=",">
+            <if test="userName!=null">
+                userName,
+            </if>
+            <if test="userPhone!=null">
+                userPhone,
+            </if>
+            <if test="orderRemake!=null">
+                orderRemake,
+            </if>
+            <if test="orderName!=null">
+                orderName,
+            </if>
+            <if test="orderNum!=null">
+                orderNum,
+            </if>
+            <if test="createDate!=null">
+                createDate,
+            </if>
+            <if test="adminId!=null">
+                adminId,
+            </if>
+            <if test="adminName!=null">
+                adminName,
+            </if>
+            <if test="companyId!=null">
+                companyId,
+            </if>
+            <if test="companyName!=null">
+                companyName,
+            </if>
+            <if test="departmentId!=null">
+                departmentId,
+            </if>
+            <if test="departmentName!=null">
+                departmentName,
+            </if>
+            <if test="uploadTime != null">
+                uploadTime,
+            </if>
+            <if test="userCode != null">
+                userCode,
+            </if>
+        </trim>
+        )value (
+        <trim suffixOverrides=",">
+            <if test="userName!=null">
+                #{userName},
+            </if>
+            <if test="userPhone!=null">
+                #{userPhone},
+            </if>
+            <if test="orderRemake!=null">
+                #{orderRemake},
+            </if>
+            <if test="orderName!=null">
+                #{orderName},
+            </if>
+            <if test="orderNum!=null">
+                #{orderNum},
+            </if>
+            <if test="createDate!=null">
+                #{createDate},
+            </if>
+            <if test="adminId!=null">
+                #{adminId},
+            </if>
+            <if test="adminName!=null">
+                #{adminName},
+            </if>
+            <if test="companyId!=null">
+                #{companyId},
+            </if>
+            <if test="companyName!=null">
+                #{companyName},
+            </if>
+            <if test="departmentId!=null">
+                #{departmentId},
+            </if>
+            <if test="departmentName!=null">
+                #{departmentName},
+            </if>
+            <if test="uploadTime != null">
+                #{uploadTime},
+            </if>
+            <if test="userCode != null">
+                #{userCode},
+            </if>
+        </trim>
+        )
+
+    </insert>
+
+
+    <delete id="deleteUserMsg" parameterType="Long">
+        UPDATE t_uploadusermsg status = 0 WHERE id=#{value}
+        /*delete from t_uploadusermsg where id = #{value}*/
+    </delete>
+
+
+
+
+
+
+
+</mapper>

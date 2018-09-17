@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="common">
+
+	<!-- pagination -->
+	<sql id="pager">
+		<if test="pageSort != null and pageSort != ''"> ORDER BY ${pageSort} </if>
+		<if test="pageStart != null and pageSize != null"> LIMIT #{pageStart},#{pageSize} </if>
+	</sql>
+	
+	<sql id="userKeyCondition">
+		<if test="keywords != null and keywords != ''">
+			AND (
+				user_name = #{keywords} OR
+				user_phone = #{keywords}
+			)
+		</if>
+	</sql>
+
+    <sql id="">
+        <if test="company != null">
+            AND  y.company_id IN <foreach item="idx" collection="company" open="(" separator="," close=")"> #{idx} </foreach>
+        </if>
+    </sql>
+
+</mapper>

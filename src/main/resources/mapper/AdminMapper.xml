@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.AdminMapper">
+
+	<sql id="adminCondition">
+		<where>
+            <if test="keywords != null and keywords != ''">
+                AND (
+                    a.admin_name = #{keywords} OR
+                    a.admin_realname = #{keywords} OR
+                    a.admin_num = #{keywords} OR
+					a.admin_phone = #{keywords}
+                )
+            </if>
+            <if test="adminName != null and adminName !=''">AND a.admin_name = #{adminName}</if>
+            <!--<if test="roleId != null">AND a.role_id = #{roleId}</if>-->
+		</where>
+	</sql>
+
+	<sql id="baseColumn">
+		a.id admin_id,
+		a.role_id,
+		a.admin_name,
+		a.admin_realname,
+		a.admin_phone,
+		a.admin_num,
+		a.admin_addr,
+		a.admin_create_time,
+		a.admin_login_time,
+		a.admin_login_ip,
+		a.is_delete,
+		a.admin_flag,
+		/*r.role_name,
+		r.role_flag,
+		r.is_delete AS `is_delete2`,*/
+		g.group_id,
+        g.group_name,
+        g.status,
+        g.father_group_id,
+        g.overall,
+/*        g.type,
+        g.type_id,*/
+        r.id role_id,
+		r.role_name,
+		r.role_rights,
+		r.role_flag,
+		r.is_delete,
+		vg.vendor_type
+	</sql>
+
+	<!--<resultMap type="admin" id="adminResultMap">
+		<id property="id" column="id" />
+		<result property="adminName" column="admin_name" />
+		<result property="adminRealname" column="admin_realname" />
+		<result property="adminPhone" column="admin_phone" />
+        <result property="adminNum" column="admin_num" />
+        <result property="adminAddr" column="admin_addr" />
+		<result property="adminCreateTime" column="admin_create_time" />
+		<result property="adminLoginTime" column="admin_login_time" />
+		<result property="adminLoginIp" column="admin_login_ip" />
+		<result property="adminFlag" column="admin_flag" />
+		<result property="isDelete" column="is_delete" />
+		<association property="role" javaType="role">
+			<id property="id" column="role_id" />
+			<result property="roleName" column="role_name" />
+            <result property="roleFlag" column="role_flag" />
+			<result property="isDelete" column="is_delete2" />
+		</association>
+	</resultMap>-->
+	<resultMap type="admin" id="adminResultMap">
+		<id property="id" column="admin_id"/>
+		<!--<result property="roleId" column="role_id"/>-->
+		<result property="adminName" column="admin_name"/>
+		<result property="adminRealname" column="admin_realname"/>
+		<result property="adminPassword" column="admin_password"/>
+		<result property="adminPhone" column="admin_phone"/>
+		<result property="adminNum" column="admin_num"/>
+		<result property="adminAddr" column="admin_addr"/>
+		<result property="adminCreateTime" column="admin_create_time"/>
+		<result property="adminLoginTime" column="admin_login_time"/>
+		<result property="adminLoginIp" column="admin_login_ip"/>
+		<result property="adminFlag" column="admin_flag"/>
+		<result property="isDelete" column="is_delete"/>
+		<collection property="groups" javaType="List" ofType="Group" resultMap="com.ws.mapper.RoleMapper.groupResultMap"/>
+	</resultMap>
+
+	<select id="findByCondition" resultMap="adminResultMap" parameterType="baseVo">
+        SELECT<include refid="baseColumn"></include>
+        FROM `t_admin` a
+        LEFT JOIN `t_group_admin` ga ON a.id = ga.admin_id
+        LEFT JOIN `t_group` g ON g.group_id = ga.group_id
+        LEFT JOIN `t_group_role` gr ON gr.group_id = g.group_id
+        LEFT JOIN `t_role` r ON gr.role_id = r.id
+        LEFT JOIN `t_vendor_gl` vg ON vg.group_id = g.group_id
+        LEFT JOIN `t_company` c ON vg.vendor_id = c.id AND vg.vendor_type = 1
+        LEFT JOIN `t_department` d ON d.id = vg.vendor_id AND vg.vendor_type = 2
+        <include refid="adminCondition"></include>
+		<include refid="common.pager"></include>
+	</select>
+
+	<select id="findCountByCondition" resultType="int" parameterType="baseVo">
+		SELECT COUNT(1)
+		FROM t_admin a
+        LEFT JOIN `t_group_admin` ga ON a.id = ga.admin_id
+        LEFT JOIN `t_group` g ON g.group_id = ga.group_id
+        LEFT JOIN `t_group_role` gr ON gr.group_id = g.group_id
+        LEFT JOIN `t_role` r ON gr.role_id = r.id
+        LEFT JOIN `t_vendor_gl` vg ON vg.group_id = g.group_id
+        LEFT JOIN `t_company` c ON vg.vendor_id = c.id AND vg.vendor_type = 1
+        LEFT JOIN `t_department` d ON d.id = vg.vendor_id AND vg.vendor_type = 2
+		<include refid="adminCondition"></include>
+	</select>
+
+    <select id="findById" resultMap="adminResultMap" parameterType="long">
+        SELECT <include refid="baseColumn"></include>
+		FROM `t_admin` a
+		LEFT JOIN `t_group_admin` ga ON a.id = ga.admin_id
+		LEFT JOIN `t_group` g ON g.group_id = ga.group_id
+		LEFT JOIN `t_group_role` gr ON gr.group_id = g.group_id
+		LEFT JOIN `t_role` r ON gr.role_id = r.id
+		LEFT JOIN `t_vendor_gl` vg ON vg.group_id = g.group_id
+		LEFT JOIN `t_company` c ON vg.vendor_id = c.id AND vg.vendor_type = 1
+		LEFT JOIN `t_department` d ON d.id = vg.vendor_id AND vg.vendor_type = 2
+        WHERE a.id = #{id}
+    </select>
+
+	<select id="findCountByKey" resultType="int" parameterType="baseVo">
+		SELECT COUNT(1)
+		FROM t_admin a
+        LEFT JOIN `t_group_admin` ga ON a.id = ga.admin_id
+        LEFT JOIN `t_group` g ON g.group_id = ga.group_id
+        LEFT JOIN `t_group_role` gr ON gr.group_id = g.group_id
+        LEFT JOIN `t_role` r ON gr.role_id = r.id
+        LEFT JOIN `t_vendor_gl` vg ON vg.group_id = g.group_id
+        LEFT JOIN `t_company` c ON vg.vendor_id = c.id AND vg.vendor_type = 1
+        LEFT JOIN `t_department` d ON d.id = vg.vendor_id AND vg.vendor_type = 2
+        <include refid="adminCondition"></include>
+	</select>
+
+	<select id="findByNameAndPwd" resultMap="adminResultMap" parameterType="string">
+		SELECT <include refid="baseColumn"></include>
+		FROM `t_admin` a
+		LEFT JOIN `t_group_admin` ga ON a.id = ga.admin_id
+		LEFT JOIN `t_group` g ON g.group_id = ga.group_id
+		LEFT JOIN `t_group_role` gr ON gr.group_id = g.group_id
+		LEFT JOIN `t_role` r ON gr.role_id = r.id
+		LEFT JOIN `t_vendor_gl` vg ON vg.group_id = g.group_id
+		LEFT JOIN `t_company` c ON vg.vendor_id = c.id AND vg.vendor_type = 1
+		LEFT JOIN `t_department` d ON d.id = vg.vendor_id AND vg.vendor_type = 2
+		WHERE a.admin_name = #{adminName} AND a.admin_password = #{adminPassword}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="admin">
+		INSERT INTO t_admin (
+		  admin_name,
+		  admin_realname,
+		  admin_password,
+		  admin_phone,
+		  admin_num,
+          admin_addr,
+		  admin_create_time
+		)
+		VALUE (
+		  #{adminName},
+		  #{adminRealname},
+		  #{adminPassword},
+		  #{adminPhone},
+		  #{adminNum},
+          #{adminAddr},
+		  #{adminCreateTime}
+		)
+	</insert>
+
+	<update id="update" parameterType="admin">
+		UPDATE t_admin
+		<set>
+			<if test="role != null and role.id != null">role_id = #{role.id},</if>
+			<if test="adminName != null and adminName != ''">admin_name = #{adminName},</if>
+			<if test="adminRealname != null and adminRealname != ''">admin_realname = #{adminRealname},</if>
+			<if test="adminPassword != null and adminPassword != ''">admin_password = #{adminPassword},</if>
+			<if test="adminPhone != null and adminPhone != ''">admin_phone = #{adminPhone},</if>
+            <if test="adminNum != null">admin_num = #{adminNum},</if>
+            <if test="adminAddr != null and adminAddr != ''">admin_addr = #{adminAddr},</if>
+			<if test="adminLoginTime != null">admin_login_time = #{adminLoginTime},</if>
+			<if test="adminLoginIp != null and adminLoginIp != ''">admin_login_ip = #{adminLoginIp},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete" parameterType="long">
+        UPDATE t_admin SET is_delete = !is_delete
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.iOrpLimitMapper">
+    <sql id="iOrpLimitSql">
+        id,num,lasttime,frequency,grade,status
+    </sql>
+    <resultMap id="iOrPLimitResultMap" type="iOrPLimit">
+        <id property="id" column="id"/>
+        <result property="num" column="num"/>
+        <result property="lasttime" column="lasttime"/>
+        <result property="frequency" column="frequency"/>
+        <result property="grade" column="grade"/>
+        <result property="status" column="status"/>
+    </resultMap>
+    <select id="findipLimitByNum" resultMap="iOrPLimitResultMap" parameterType="String">
+        SELECT <include refid="iOrpLimitSql"></include>
+        FROM t_ip_limit
+        WHERE num = #{value}
+    </select>
+    <select id="findphonenumLimitByNum" resultMap="iOrPLimitResultMap" parameterType="String">
+        SELECT <include refid="iOrpLimitSql"></include>
+        FROM t_phonenum_limit
+        WHERE num = #{value}
+    </select>
+    <select id="findipLimitAll" resultMap="iOrPLimitResultMap">
+        SELECT <include refid="iOrpLimitSql"></include>
+        FROM t_ip_limit
+    </select>
+    <select id="findphonenumLimitAll" resultMap="iOrPLimitResultMap">
+        SELECT <include refid="iOrpLimitSql"></include>
+        FROM t_phonenum_limit
+    </select>
+    <update id="ipLimitFrequencyAdd" parameterType="Long">
+        UPDATE t_ip_limit SET frequency = frequency + 1,lasttime = sysdate() WHERE id = #{value}
+    </update>
+    <update id="phomenumLimitFrequencyAdd" parameterType="Long">
+        UPDATE t_phonenum_limit SET frequency = frequency + 1,lasttime = sysdate() WHERE id = #{value}
+    </update>
+    <update id="phomenumLimitChangeStatus" parameterType="Long">
+        UPDATE t_phonenum_limit SET status = !status WHERE id = #{value}
+    </update>
+    <update id="ipLimitChangeStatus" parameterType="Long">
+        UPDATE t_ip_limit SET status = !status WHERE id = #{value}
+    </update>
+    <update id="phomenumLimitChangeGrade" parameterType="Long">
+        UPDATE t_phonenum_limit SET grade = grade+1 WHERE id = #{value}
+    </update>
+    <update id="ipLimitChangeGrade" parameterType="Long">
+        UPDATE t_ip_limit SET grade = grade+1 WHERE id = #{value}
+    </update>
+    <update id="ipLimitRecovery" parameterType="iOrPLimit">
+        UPDATE t_ip_limit SET frequency = #{frequency} WHERE id = #{value}
+    </update>
+    <update id="phonenumLimitRecovery" parameterType="iOrPLimit">
+        UPDATE t_phonenum_limit SET frequency = #{frequency} WHERE id = #{value}
+    </update>
+    <insert id="insertIp" useGeneratedKeys="true" keyProperty="id" parameterType="iOrPLimit">
+        INSERT INTO t_ip_limit(`num`,`lasttime`,`frequency`,`grade`) VALUE (#{num},sysdate(),1,1);
+    </insert>
+    <insert id="insertPhonenum" useGeneratedKeys="true" keyProperty="id" parameterType="iOrPLimit">
+        INSERT INTO t_phonenum_limit(`num`,`lasttime`,`frequency`,`grade`) VALUE (#{num},sysdate(),1,1);
+    </insert>
+
+
+
+
+</mapper>

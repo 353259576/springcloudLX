@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.ConfigMapper">
+
+	<sql id="baseColumn">
+		id,
+		per1,
+		per2
+	</sql>
+
+	<resultMap type="config" id="configResultMap">
+		<id property="id" column="id" />
+		<result property="per1" column="per1" />
+		<result property="per2" column="per2" />
+	</resultMap>
+
+	<select id="findById" resultMap="configResultMap" parameterType="int">
+		SELECT <include refid="baseColumn"></include> 
+		FROM t_config
+		WHERE id = #{id}
+	</select>
+
+	<update id="update" parameterType="config">
+		UPDATE t_config
+		<set>
+			<if test="per1 != null">per1 = #{per1},</if>
+			<if test="per2 != null">per2 = #{per2},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+</mapper>

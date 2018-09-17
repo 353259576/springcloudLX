@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+.clear-btn{
+    color: #cccccc;
+    text-decoration: none;
+    display: none;
+    width: 14px;
+    height: 14px;
+    line-height: 1;
+    overflow: hidden;
+    position: absolute;
+    background: url(../images/clear.png) no-repeat;
+    background-size: cover;
+    right: 6px;
+    top: 50%;
+    margin-top: -7px
+}

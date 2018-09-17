@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ws.mapper.DepartmentMapper">
+    <sql id="companySql">
+        d.id,
+        d.phone,
+        d.name,
+        d.company_id,
+        c.name cname,
+        c.phone cphone,
+        d.status,
+        d.address,
+        d.area,
+        d.create_admin,
+        d.create_time,
+        d.group_id
+    </sql>
+    <sql id="companySqlWhere">
+        <where>
+        <if test="id!=null">
+            AND d.id=#{id}
+        </if>
+        <if test="phone!=null">
+            AND phone=#{phone}
+        </if>
+        <if test="name!=null">
+            AND `name`=#{name}
+        </if>
+        <if test="company!=null">
+            <if test="company.id != null">
+                AND company_id=#{company.id}
+            </if>
+        </if>
+        <if test="status!=null">
+            AND status=#{status}
+        </if>
+        <if test="address!=null">
+            AND address=#{address}
+        </if>
+        <if test="area!=null">
+            AND area=#{area}
+        </if>
+        <if test="createAdmin!=null">
+            AND create_admin=#{createAdmin}
+        </if>
+        <if test="createTime!=null">
+            AND create_time=#{createTime}
+        </if>
+        <if test="groupId!=null">
+            AND group_id=#{groupId}
+        </if>
+        </where>
+    </sql>
+    <resultMap id="departmentResultMap" type="Department">
+        <id property="id" column="id"/>
+        <result property="phone" column="phone"/>
+        <result property="name" column="name"/>
+        <result property="status" column="status"/>
+        <result property="address" column="address"/>
+        <result property="area" column="area"/>
+        <result property="createAdmin" column="create_admin"/>
+        <result property="createTime" column="create_time"/>
+        <result property="groupId" column="group_id"/>
+        <association property="company" javaType="Company">
+            <id property="id" column="company_id"/>
+            <result property="name" column="cname"/>
+            <result property="phone" column="cphone"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="selectDepartment" resultMap="departmentResultMap" parameterType="Department">
+        SELECT <include refid="companySql"/>
+        FROM t_department d
+        LEFT JOIN t_company c ON c.id = d.company_id
+        <include refid="companySqlWhere"/>
+        <include refid="common.pager"/>
+    </select>
+
+    <select id="selectDepartmentCount" resultType="Integer" parameterType="Department">
+        SELECT COUNT(1)
+        FROM t_department d
+        LEFT JOIN t_company c ON c.id = d.company_id
+        <include refid="companySqlWhere"/>
+    </select>
+
+
+    <insert id="insertDepartment" useGeneratedKeys="true" keyProperty="id" parameterType="Department">
+        INSERT INTO t_department
+        (
+        <trim suffixOverrides=",">
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="name!=null">
+                `name`,
+            </if>
+            <if test="company!=null">
+                <if test="company.id != null">
+                    company_id,
+                </if>
+            </if>
+            <if test="status!=null">
+                status,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="area!=null">
+                area,
+            </if>
+            <if test="createAdmin!=null">
+                create_admin,
+            </if>
+            <if test="createTime!=null">
+                create_time,
+            </if>
+            <if test="groupId!=null">
+                group_id,
+            </if>
+        </trim>
+        )
+        VALUE
+        (
+        <trim suffixOverrides=",">
+            <if test="phone!=null">
+                #{phone},
+            </if>
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="company!=null">
+                <if test="company.id != null">
+                    #{company.id},
+                </if>
+            </if>
+            <if test="status!=null">
+                #{status},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="area!=null">
+                #{area},
+            </if>
+            <if test="createAdmin!=null">
+                #{createAdmin},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="groupId!=null">
+                #{groupId},
+            </if>
+
+        </trim>
+        )
+    </insert>
+
+    <update id="updateDepartment" useGeneratedKeys="true" keyProperty="id" parameterType="Department">
+        UPDATE t_department
+        <set>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="name!=null">
+                `name`=#{name},
+            </if>
+            <if test="company!=null">
+                <if test="company.id != null">
+                    company_id=#{company.id},
+                </if>
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="area!=null">
+                area=#{area},
+            </if>
+            <if test="createAdmin!=null">
+                create_admin=#{createAdmin},
+            </if>
+            <if test="createTime!=null">
+                create_time=#{createTime},
+            </if>
+            <if test="groupId!=null">
+                group_id=#{groupId},
+            </if>
+        </set>
+        <where>
+            <if test="id!=null">
+                AND id=#{id}
+            </if>
+        </where>
+    </update>
+
+
+
+</mapper>
